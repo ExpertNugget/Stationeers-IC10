@@ -1,0 +1,73 @@
+# Switch on-off and see the pin's names
+alias intvent d0 #l.1
+alias extvent d1 #l.1
+alias intdoor d2 #l.1
+alias extdoor d3 #l.1
+alias lock d4 #l.1
+alias cycle d5 #l.1
+yield #l.1
+# CONFIG
+# Target Base Pressure
+# Extiorior Pressure
+# CONFIG
+# DONT TOUCH BELOW UNLESS YOU KNOW WHAT YOU'RE DOING!!
+s d1 On 0 #l.17
+s d0 On 0 #l.18
+s d3 Open 1 #l.19
+s d2 Open 0 #l.20
+s db Setting 0 #l.22
+# 0 = Open to Ext, Ready to cycle
+# 1 = Cycling to INT
+# 2 = Open to Int, Ready to cyle
+# 3 = Cyclig to EXT
+Start:
+yield #l.29
+l r0 d4 Setting #l.30
+bne r0 1 27 #l.30
+j Start #l.31
+l r0 d5 Setting #l.33
+bne r0 1 49 #l.33
+l r0 db Setting #l.34
+bne r0 0 49 #l.34
+s db Setting 1 #l.35
+s d3 Open 0 #l.36
+s d1 Mode 1 #l.37
+s d1 On 1 #l.38
+lb r0 -1252983604 Pressure 0 #l.39
+ble r0 0 39 #l.39
+sleep 3 #l.40
+j 35 #l.41
+s d1 On 0 #l.42
+s d0 Mode 0 #l.43
+s d0 On 1 #l.44
+lb r0 -1252983604 Pressure 0 #l.45
+bgt r0 1 46 #l.45
+sleep 3 #l.46
+j 42 #l.47
+s d0 On 0 #l.48
+s d2 Open 1 #l.49
+s db Setting 2 #l.50
+l r0 d5 Setting #l.53
+bne r0 1 71 #l.53
+l r0 db Setting #l.54
+bne r0 2 71 #l.54
+s db Setting 3 #l.55
+s d2 Open 0 #l.56
+s d0 Mode 1 #l.57
+s d0 On 1 #l.58
+lb r0 -1252983604 Pressure 0 #l.59
+ble r0 0 61 #l.59
+sleep 3 #l.60
+j 57 #l.61
+s d0 On 0 #l.62
+s d1 Mode 0 #l.63
+s d1 On 1 #l.64
+lb r0 -1252983604 Pressure 0 #l.65
+bgt r0 3 68 #l.65
+sleep 3 #l.66
+j 64 #l.67
+s d1 On 0 #l.68
+s d3 Open 1 #l.69
+s db Setting 0 #l.70
+j Start #l.73
+# Compiled at 2024-03-23 23:24 by Exca's Basic10.
